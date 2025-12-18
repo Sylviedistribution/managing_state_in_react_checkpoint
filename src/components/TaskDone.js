@@ -1,20 +1,35 @@
-import React from "react";
-import { Card } from "react-bootstrap";
 import { TaskStatus } from "../models/Status";
 import TaskItem from "./Task.item";
 
-export default function TaskDone({ tasks, handleToggle, handleDelete }) {
-  return tasks.filter((task) => task.status === TaskStatus.DONE)
-    .map((task,index) => (
-      <Card key={task.id ?? index}>
-        <Card.Body>
+export default function TaskDone({
+  tasks,
+  handleToggle,
+  handleDelete,
+  handleEdit,
+  updateTaskStatus,
+}) {
+ return (
+    <div
+      className="tasks"
+      onDragOver={(e) => {
+        e.preventDefault();
+      }}
+      onDrop={(e) => {
+        const taskId = e.dataTransfer.getData("taskId");
+        updateTaskStatus(taskId, TaskStatus.DONE);
+      }}
+    >
+      {tasks
+        .filter((task) => task.status === TaskStatus.DONE)
+        .map((task) => (
           <TaskItem
-            index={index}
+            key={task.id}
             task={task}
             handleToggle={handleToggle}
             handleDelete={handleDelete}
+            handleEdit={handleEdit}
           />
-        </Card.Body>
-      </Card>
-    ));
+        ))}
+    </div>
+  );
 }
