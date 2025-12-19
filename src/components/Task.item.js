@@ -41,7 +41,7 @@ export default function TaskItem({
                 onChange={() => handleToggle(task)}
               />
 
-              <Pencil className="pencil" onClick={() => handleEdit(task)} />
+              <Pencil className="pencil" onClick={() => handleEdit(task)} title="Edit"/>
 
               <Trash
                 className="trash"
@@ -56,6 +56,7 @@ export default function TaskItem({
 
                   handleDelete(task.id);
                 }}
+                title="Delete"
               />
             </div>
           </div>
