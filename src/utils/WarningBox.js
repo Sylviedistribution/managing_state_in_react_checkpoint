@@ -12,7 +12,7 @@ export default function WarningBox({ onConfirm, onCancel }) {
             Are you sure? Do you want to delete this task?
           </Card.Text>
         </Card.Body>
-        <Card.Footer className="text-center">
+        <Card.Footer className="text-center d-flex justify-content-around">
           <Button variant="danger" onClick={onConfirm}>Yes</Button>{' '}
           <Button variant="secondary" onClick={onCancel}>No</Button>
         </Card.Footer>

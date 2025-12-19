@@ -7,9 +7,12 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [saveError, setSaveError] = useState(null);
-
-  const errors = getErrors(name, description, dueDate);
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({
+    name: false,
+    description: false,
+    dueDate: false,
+  });
   const isValid = Object.keys(errors).length === 0; // Verifier si le formulaire est valide
 
   // Synchroniser les champs avec la tâche à éditer
@@ -20,39 +23,49 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
       setDueDate(taskToEdit.dueDate || "");
       console.log("Formulaire chargé avec : ", taskToEdit);
     } else {
-      setName("");
-      setDescription("");
-      setDueDate("");
+      clean();
       console.log("Formulaire réinitialisé");
     }
-  }, [taskToEdit]); // <-- déclenche uniquement si l'id change
+  }, [taskToEdit]);
+
+  useEffect(() => {
+    setErrors(getErrors(name, description, dueDate));
+  }, [name, description, dueDate]);
 
   function clean() {
     setName("");
     setDescription("");
     setDueDate("");
+    setErrors({});
+    setTouched({ name: false, description: false, dueDate: false });
   }
 
   function getErrors(name, description, dueDate) {
-    const result = {};
-    if (!name) result.city = "City is required.";
-    if (!description) result.description = "description is required.";
-    if (!dueDate) result.dueDate = "Due date is required.";
+    const errors = {};
+
+    if (!name) errors.name = "Task name is required";
     if (name.length > 50)
-      result.city = "The task name must contain less than 50 caracters ";
-    if (dueDate < Date.now())
-      result.dueDate = "You cannot select a date earlier than today.";
-    return result;
+      errors.name = "Task name must be less than 50 characters";
+
+    if (!description) errors.description = "Description is required";
+    if (description.length > 100)
+      errors.description = "Description must be less than 100 characters";
+
+    if (!dueDate) errors.dueDate = "Due date is required";
+    else if (new Date(dueDate) < new Date())
+      errors.dueDate = "Due date cannot be in the past";
+
+    return errors;
   }
 
   function handleSubmit(e) {
     e.preventDefault();
 
+    if (!isValid) return;
+
     if (taskToEdit) {
-      console.log("Je suis bien dans le formulaire:", taskToEdit);
       confirmEdit({
-        // passer la tâche mise à jour
-        ...taskToEdit,
+        ...taskToEdit, // prendre un objet copie de la tache à éditer grace au spread operator puis modifier ses champs
         name,
         description,
         dueDate,
@@ -79,12 +92,11 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
           type="text"
           placeholder="Enter task name"
           onChange={(e) => setName(e.target.value)}
+          onBlur={() => setTouched(touched =>({ ...touched, name: true }))}
           value={name}
         />
-        {!isValid && (
-          <Form.Label>
-            {errors[name]}
-          </Form.Label>
+        {touched.name && errors.name && (
+          <small className="text-danger">{errors.name}</small>
         )}
       </Form.Group>
 
@@ -93,8 +105,12 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
           type="text"
           placeholder="Enter task description"
           onChange={(e) => setDescription(e.target.value)}
+          onBlur={() => setTouched(touched =>({ ...touched, description: true }))}
           value={description}
         />
+        {touched.description && errors.description && (
+          <small className="text-danger">{errors.description}</small>
+        )}
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBasicDescription">
@@ -102,12 +118,16 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
         <Form.Control
           type="date"
           onChange={(e) => setDueDate(e.target.value)}
+          onBlur={() => setTouched(touched =>({ ...touched, dueDate: true }))}
           value={dueDate}
         />
+        {touched.dueDate && errors.dueDate && (
+          <small className="text-danger">{errors.dueDate}</small>
+        )}
       </Form.Group>
 
       <div className="d-flex justify-content-end">
-        <Button variant="primary" type="submit">
+        <Button variant="primary" type="submit" disabled={!isValid}>
           {taskToEdit && taskToEdit.id ? "Update Task" : "Add Task"}
         </Button>
       </div>

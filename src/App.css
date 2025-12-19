@@ -49,6 +49,11 @@ h2 {
   padding: 5px;
 }
 
+.task{
+  display: flex;
+  justify-content: space-between;
+}
+
 /* Individual task item */
 .task-item {
   margin: 10px 0;
@@ -57,13 +62,13 @@ h2 {
 
 /* Task text content styling */
 .task-info {
-  white-space: nowrap;
-  /* Prevent line breaks */
-  overflow: hidden;
   /* Hide overflow text */
-  text-overflow: ellipsis;
+
+  overflow: hidden;
   /* Show ... for overflow */
-  margin: 0;
+  text-overflow: ellipsis;
+
+  
 }
 
 /* Task actions container (icons) */
@@ -88,9 +93,9 @@ h2 {
   color: white;
   background-color: rgb(220, 19, 19);
   cursor: pointer;
-  font-size: 20px;
+  font-size: 25px;
   border-radius: 5px;
-  padding: 3px;
+  padding: 4px;
 }
 
 /* Edit icon styling */
@@ -98,26 +103,26 @@ h2 {
   color: white;
   background-color: rgb(201, 180, 19);
   border-radius: 5px;
-  padding: 3px;
+  padding: 4px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   margin-right: 10px;
 
 }
 
 /* Eye icon styling */
-.eye {
+/* .eye {
   color: white;
   background-color: rgb(7, 114, 156);
   border-radius: 5px;
   padding: 3px;
   cursor: pointer;
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   margin-right: 10px;
 
-}
+} */
 
 .warning-box {
   position: fixed;
