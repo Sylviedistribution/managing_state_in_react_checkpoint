@@ -10,21 +10,28 @@ import { TaskStatus } from "./models/Status";
 import { useState, useEffect } from "react";
 
 function App() {
+  // Initialize tasks from localStorage or as an empty array
   const [tasks, setTasks] = useState(
     localStorage.getItem("tasks")
       ? JSON.parse(localStorage.getItem("tasks"))
       : []
   );
-
+  // State for warning box visibility and task to delete
   const [showWarning, setShowWarning] = useState(false);
+
+  // State to hold the task to be deleted or edited
   const [taskToDelete, setTaskToDelete] = useState(null);
+
+  // State to hold the task being edited
   const [taskToEdit, setTaskToEdit] = useState(null);
 
+  // Save tasks to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks));
     console.log("Tasks: ", tasks);
   }, [tasks]);
 
+  // Toggle task status between ONHOLD, ONPROGRESS, and DONE
   function handleToggle(task) {
     const newItems = tasks.map((item) => {
       if (item.id !== task.id) return item;
@@ -44,16 +51,17 @@ function App() {
     setTasks(newItems);
   }
 
+  function handleEdit(updatedTask) {
+    console.log("Editing task: ", updatedTask);
+    setTaskToEdit({ ...updatedTask });
+  }
+
+  // Update task status when dropped into a new section
   function updateTaskStatus(taskId, newStatus) {
     const updatedTasks = tasks.map((task) =>
       task.id === taskId ? { ...task, status: newStatus } : task
     );
     setTasks(updatedTasks);
-  }
-
-  function handleEdit(updatedTask) {
-    console.log("Editing task: ", updatedTask);
-    setTaskToEdit({ ...updatedTask });
   }
 
   function confirmEdit(updatedTask) {
@@ -74,7 +82,6 @@ function App() {
     setShowWarning(true);
   }
 
-  // Confirm deletion
   function confirmDelete() {
     const newItems = tasks.filter((item) => item.id !== taskToDelete);
     setTasks(newItems);
@@ -135,7 +142,8 @@ function App() {
         </div>
       </section>
 
-      {showWarning && (
+      {// Show warning box if deletion is confirmed
+      showWarning && (
         <WarningBox onConfirm={confirmDelete} onCancel={cancelDelete} />
       )}
       <Footer />

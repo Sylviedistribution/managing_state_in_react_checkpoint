@@ -15,16 +15,14 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
   });
   const isValid = Object.keys(errors).length === 0; // Verifier si le formulaire est valide
 
-  // Synchroniser les champs avec la tâche à éditer
+  // Use useEffect to load task data into the form when taskToEdit changes
   useEffect(() => {
     if (taskToEdit && taskToEdit.id) {
       setName(taskToEdit.name || "");
       setDescription(taskToEdit.description || "");
       setDueDate(taskToEdit.dueDate || "");
-      console.log("Formulaire chargé avec : ", taskToEdit);
     } else {
       clean();
-      console.log("Formulaire réinitialisé");
     }
   }, [taskToEdit]);
 
@@ -65,7 +63,7 @@ export default function TaskForm({ tasks, setTasks, taskToEdit, confirmEdit }) {
 
     if (taskToEdit) {
       confirmEdit({
-        ...taskToEdit, // prendre un objet copie de la tache à éditer grace au spread operator puis modifier ses champs
+        ...taskToEdit, // Take a copy of the task to be edited using the spread operator, then modify its fields.
         name,
         description,
         dueDate,

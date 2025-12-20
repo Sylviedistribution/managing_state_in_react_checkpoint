@@ -11,6 +11,7 @@ export default function TaskDone({
  return (
     <div
       className="tasks"
+      //Drag the task to Done section
       onDragOver={(e) => {
         e.preventDefault();
       }}

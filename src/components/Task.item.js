@@ -28,6 +28,7 @@ export default function TaskItem({
               </Card.Text>
             </div>
             <div className="task-action">
+              {/* Toggle task status whith the radio */}
               <Form.Check
                 inline
                 label={
@@ -46,6 +47,7 @@ export default function TaskItem({
               <Trash
                 className="trash"
                 onClick={() => {
+                  // Decomment if you want to display a native confirmation box instead of WarningBox component
                   // if (
                   //   window.confirm(
                   //     `Are you sure you want to delete the task: "${task.name}"?`
