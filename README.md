@@ -2,6 +2,8 @@
 
 This is a **React-based To-Do List application** designed to demonstrate modern state management, component-based architecture, form validation, and browser storage persistence. The app allows users to **add, edit, delete, and track tasks**, providing a clear workflow with tasks divided into three statuses: **On Hold**, **On Progress**, and **Done**. Each status has its own column, and tasks can be moved between columns using drag & drop.
 
+I took my inspiration for the design and the ui/ux from trello. 
+
 Tasks include a **name**, **description**, and **due date**, with validation to ensure all fields are completed correctly. Completed tasks are visually distinguished, and deleting a task triggers a confirmation prompt. All tasks are saved in the browser's **localStorage**, ensuring persistence between sessions.
 
 ## Key Features

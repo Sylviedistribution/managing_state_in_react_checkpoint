@@ -1,5 +1,5 @@
 import { TaskStatus } from "../models/Status";
-import TaskItem from "./Task.item";
+import TaskItem from "./TaskItem";
 
 export default function TaskDone({
   tasks,
@@ -15,12 +15,14 @@ export default function TaskDone({
       onDragOver={(e) => {
         e.preventDefault();
       }}
+      //Drop the task to Done section
       onDrop={(e) => {
         const taskId = e.dataTransfer.getData("taskId");
         updateTaskStatus(taskId, TaskStatus.DONE);
       }}
     >
-      {tasks
+      { //Apply filter to show only the done
+      tasks
         .filter((task) => task.status === TaskStatus.DONE)
         .map((task) => (
           <TaskItem

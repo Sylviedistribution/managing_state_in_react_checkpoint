@@ -1,5 +1,5 @@
 import { TaskStatus } from "../models/Status";
-import TaskItem from "./Task.item";
+import TaskItem from "./TaskItem";
 
 export default function TaskOnProgress({
   tasks,
